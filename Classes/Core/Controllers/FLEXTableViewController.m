@@ -248,6 +248,26 @@ CGFloat const kFLEXDebounceForExpensiveIO = 0.5;
             _showSearchBarInitially = NO;
         }
     }
+
+     // 确保视图布局不会延伸到导航栏下方
+//       self.extendedLayoutIncludesOpaqueBars = NO;
+       self.edgesForExtendedLayout = UIRectEdgeNone;
+    if (@available(iOS 13.0, *)) {
+           UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+           [appearance configureWithOpaqueBackground]; // 设置导航栏为不透明
+           appearance.backgroundColor = [UIColor whiteColor]; // 设置导航栏背景颜色
+           appearance.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor]}; // 设置标题颜色
+
+           // 应用外观设置
+           self.navigationController.navigationBar.standardAppearance = appearance;
+           self.navigationController.navigationBar.scrollEdgeAppearance = self.navigationController.navigationBar.standardAppearance;
+       } else {
+           // 对于 iOS 13 以下的版本，手动设置导航栏背景
+           self.navigationController.navigationBar.translucent = NO;
+           self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+           self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+           self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
+       }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
